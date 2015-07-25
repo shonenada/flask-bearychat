@@ -7,6 +7,7 @@
     :copyright: (c) 2015 Yaoda Liu.
     :license: MIT
 """
+from .bearychat import BearyChat
 
-__all__ = ['']
+__all__ = ['BearyChat']
 __version__ = '0.1.0'

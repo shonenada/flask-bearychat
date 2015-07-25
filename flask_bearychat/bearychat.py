@@ -41,15 +41,15 @@ class BearyChat(object):
         return wrapper
 
     def dispatch(self):
-        data = request.data
+        data = json.loads(request.data)
         trigger_word = data.get('trigger_word')
         text = data.get('text')
-
-        command = text[len(trigger_word):]
-
+        command = text[len(trigger_word) + 1:]
         func, kwargs = self._funcs[command]
-        kwargs.update(data.to_dict())
+        kwargs.update(data)
         return func(**kwargs)
+
+    dispatch.methods = ['POST']
 
     def repsonse(self, text, attachments=None):
         resp = OutgoingResponse()
@@ -57,4 +57,4 @@ class BearyChat(object):
         if attachments is not None and isinstance(attachments, dict):
             for each in attachments:
                 resp.add_attachment(**each)
-        return resp
+        return resp.make_response()
