@@ -34,6 +34,17 @@ class BearyChat(object):
         self._funcs = {}
 
     def command(self, command, **kwargs):
+        """A decorator for registering a command handler.
+        Example::
+
+            @bearychat.command('hi')
+            def hi(**kwargs):
+                user_name = kwargs.get('user_name')
+                return bearychat.response('Hi, %s' % user_name)
+
+        :param command: the command to register.
+        :param kwargs: extra args pass to the function.
+        """
         @wraps
         def wrapper(func):
             self._funcs[command] = (func, kwargs)
@@ -41,6 +52,11 @@ class BearyChat(object):
         return wrapper
 
     def dispatch(self):
+        """A flask view function which dispath the http request to
+        matching registered command handler.
+        Before using Flask-BearyChat, you should add url rule with this method
+        as `view_func`.
+        """
         data = json.loads(request.data)
         trigger_word = data.get('trigger_word')
         text = data.get('text')
@@ -52,9 +68,14 @@ class BearyChat(object):
     dispatch.methods = ['POST']
 
     def repsonse(self, text, attachments=None):
+        """Generate a response for BearyChat's outgoing robot.
+
+        :param text: A text which going to response to robot.
+        :param attachments: options attachements.
+        """
         resp = OutgoingResponse()
         resp.set_text(text)
-        if attachments is not None and isinstance(attachments, dict):
+        if attachments is not None and isinstance(attachments, list):
             for each in attachments:
                 resp.add_attachment(**each)
         return resp.make_response()
