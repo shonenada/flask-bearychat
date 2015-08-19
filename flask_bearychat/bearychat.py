@@ -60,7 +60,9 @@ class BearyChat(object):
         data = json.loads(request.data)
         trigger_word = data.get('trigger_word')
         text = data.get('text')
-        command = text[len(trigger_word) + 1:]
+        command = text[len(trigger_word) + 1:].split()
+        if len(command) > 0:
+            command = command[0]
         func, kwargs = self._funcs[command]
         kwargs.update(data)
         return func(**kwargs)
