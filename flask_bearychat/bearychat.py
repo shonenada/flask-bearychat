@@ -1,5 +1,4 @@
 import json
-from functools import wraps
 
 from flask import request, Response
 
@@ -45,7 +44,6 @@ class BearyChat(object):
         :param command: the command to register.
         :param kwargs: extra args pass to the function.
         """
-        @wraps
         def wrapper(func):
             self._funcs[command] = (func, kwargs)
             return func
