@@ -67,7 +67,7 @@ class BearyChat(object):
 
     dispatch.methods = ['POST']
 
-    def repsonse(self, text, attachments=None):
+    def response(self, text, attachments=None):
         """Generate a response for BearyChat's outgoing robot.
 
         :param text: A text which going to response to robot.
