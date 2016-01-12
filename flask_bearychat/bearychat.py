@@ -1,6 +1,11 @@
+# -*- coding: utf-8 -*-
 import json
 
 from flask import request, Response
+
+
+class TokenError(Exception):
+    pass
 
 
 class OutgoingResponse(object):
@@ -29,8 +34,13 @@ class OutgoingResponse(object):
 
 class BearyChat(object):
 
-    def __init__(self):
-        self._funcs = {}
+    def __init__(self, app=None):
+        self.bearychat_token = None
+        if app is not None:
+            self.init_app(app)
+
+    def init_app(self, app):
+        self.bearychat_token = app.config.get('BEARYCHAT_TOKEN')
 
     def command(self, command, **kwargs):
         """A decorator for registering a command handler.
@@ -56,6 +66,11 @@ class BearyChat(object):
         as `view_func`.
         """
         data = json.loads(request.data)
+
+        token = data['token']
+        if token != self.bearychat_token:
+            raise TokenError()
+
         trigger_word = data.get('trigger_word')
         text = data.get('text')
         command = text[len(trigger_word) + 1:].split()
