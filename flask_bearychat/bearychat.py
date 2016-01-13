@@ -36,11 +36,14 @@ class BearyChat(object):
 
     def __init__(self, app=None):
         self.bearychat_token = None
+        self.bearychat_callback = None
         if app is not None:
             self.init_app(app)
 
     def init_app(self, app):
         self.bearychat_token = app.config.get('BEARYCHAT_TOKEN')
+        self.bearychat_callback = app.config.get('BEARYCHAT_CALLBACK')
+        app.add_url_rule(self.bearychat_callback, view_func=self.dispatch)
 
     def command(self, command, **kwargs):
         """A decorator for registering a command handler.
