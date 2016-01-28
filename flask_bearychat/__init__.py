@@ -10,4 +10,4 @@
 from .bearychat import BearyChat
 
 __all__ = ['BearyChat']
-__version__ = '0.1.0'
+__version__ = '0.1.1'
