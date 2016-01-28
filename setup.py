@@ -12,7 +12,7 @@ with open(os.path.join(CURRNET_DIR, 'README.rst')) as readme:
 
 setup(
     name="Flask-BearyChat",
-    version="0.1.1",
+    version="0.2.0",
     url="https://github.com/shonenada/flask-bearychat",
     author="Yaoda Liu",
     author_email="shonenada@gmail.com",
